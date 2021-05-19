@@ -1,0 +1,13 @@
+.todoList {
+    max-width: 100%;
+    padding: 1rem;
+}
+
+.todoListTitle {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.todoListItems {
+
+}

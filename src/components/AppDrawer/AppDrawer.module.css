@@ -1,0 +1,14 @@
+.sidebar {
+    width: 270px;
+    border-right: 1px rgba(0, 0, 0, 0.12) solid;
+}
+
+.sidebarHeader {
+    padding-left: 20px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+
+.sidebarIcons {
+    padding-right: 10px;
+}
