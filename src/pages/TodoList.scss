@@ -1,0 +1,15 @@
+#todo-list-page {
+  max-width: 100%;
+
+  display: flex;
+
+  .mdc-layout {
+    padding: 1rem;
+    margin-top: 4px;
+    flex: 1;
+  }
+}
+
+#todo-list-page-container {
+  display: flex;
+}

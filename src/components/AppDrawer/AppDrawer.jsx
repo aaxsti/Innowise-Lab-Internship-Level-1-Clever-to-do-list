@@ -1,6 +1,6 @@
 import React from 'react';
 import s from './AppDrawer.module.css';
-import {CircularProgress, List, ListItem, ListItemIcon, ListItemText, Typography} from '@material-ui/core';
+import {List, ListItem, ListItemIcon, ListItemText, Typography} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import StarIcon from '@material-ui/icons/Star';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
@@ -9,8 +9,6 @@ import HomeIcon from '@material-ui/icons/Home';
 import {NavLink} from "react-router-dom";
 
 const AppDrawer = ({lists}) => {
-
-    if (!lists) return <CircularProgress/>
 
     return (
         <div className={s.sidebar}>
