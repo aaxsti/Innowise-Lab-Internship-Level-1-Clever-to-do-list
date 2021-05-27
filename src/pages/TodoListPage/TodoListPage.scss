@@ -4,12 +4,13 @@
   display: flex;
 
   .mdc-layout {
-    padding: 1rem;
-    margin-top: 4px;
+
     flex: 1;
   }
 }
 
-#todo-list-page-container {
-  display: flex;
+#todo-list-title {
+  padding: 1rem;
+  background-color: #a9c8d1;
 }
+

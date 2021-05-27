@@ -3,9 +3,8 @@ import {Checkbox, Icon, IconButton, ListItem, ListItemIcon, ListItemText} from "
 import DeleteIcon from '@material-ui/icons/Delete';
 
 const TodoListItem = ({todo, onDelete, onUpdate, onSelect}) => {
-
     const handleChange = (completed) => {
-        onUpdate(todo.id, {completed})
+        onUpdate(todo.id, {completed: completed.target.checked})
     }
 
     return (
@@ -17,7 +16,7 @@ const TodoListItem = ({todo, onDelete, onUpdate, onSelect}) => {
                     onChange={handleChange}/>
             </ListItemIcon>
 
-            <ListItemText style={{flex: '1'}} onClick={() => onSelect(todo)}>{todo.title}</ListItemText>
+            <ListItemText onClick={() => onSelect(todo)}>{todo.title}</ListItemText>
 
             <IconButton onClick={() => onDelete(todo.id)}>
                 <Icon><DeleteIcon/></Icon>

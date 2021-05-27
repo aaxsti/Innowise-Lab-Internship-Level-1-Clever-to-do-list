@@ -1,12 +1,11 @@
 import React from 'react';
 import TodoListItem from "../TodoListItem/TodoListItem";
-import {List, Typography} from "@material-ui/core";
+import {List} from "@material-ui/core";
 
-const TodoList = ({todos, list, onDelete, onUpdate, onSelect}) => {
+const TodoList = ({todos, onDelete, onUpdate, onSelect}) => {
     return (
         <div>
-            <Typography variant="h5" style={{paddingBottom: 15}}>{list.title}</Typography>
-            <List>
+            <List style={{padding: '1rem'}}>
                 {
                     todos.map(todo =>
                         <TodoListItem
@@ -18,6 +17,7 @@ const TodoList = ({todos, list, onDelete, onUpdate, onSelect}) => {
                 }
             </List>
         </div>
+
     )
 }
 

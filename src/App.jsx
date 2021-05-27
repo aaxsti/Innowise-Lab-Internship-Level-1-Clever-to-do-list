@@ -1,26 +1,50 @@
-import React from 'react';
+import React, {useEffect, useMemo, useReducer} from 'react';
 import './App.scss';
-import useApi from './hooks/api';
-import {Switch, Route} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
 import AppDrawer from "./components/AppDrawer/AppDrawer";
 import AppContent from "./components/AppContent/AppContent";
-import TodoList from "./pages/TodoList";
+import TodoListPage from "./pages/TodoListPage/TodoListPage";
+import DataContext from './context/data'
+import {reducer, initialState, actions} from './store';
+import LoginPage from "./pages/LoginPage/LoginPage";
 
-function App() {
-    const {data: {lists}} = useApi();
+const App = () => {
+    const [state, dispatch] = useReducer(reducer, initialState)
 
-    return (
-        <div className="app">
-            <AppDrawer lists={lists}/>
+    const contextValue = useMemo(() => {
+        return {state, dispatch};
+    }, [state, dispatch]);
 
-            <AppContent>
-                <Switch>
-                    <Route path={'/:listId'} component={TodoList}/>
-                </Switch>
-            </AppContent>
+    useEffect(async () => {
+        await actions.getLists(dispatch);
+        actions.setAuth(dispatch);
+    }, []);
 
-        </div>
-    );
+    if (!state.user) {
+        return (
+            <Route component={LoginPage}/>
+        )
+    } else {
+        return (
+            <DataContext.Provider value={contextValue}>
+                <div className="app">
+                    <AppDrawer
+                        lists={state.lists}
+                    />
+
+                    <AppContent>
+                        <Switch>
+                            <Route exact path={'/'} component={TodoListPage}/>
+                            <Route exact path={'/login'} component={LoginPage}/>
+                            <Route exact path={'/important'} component={TodoListPage}/>
+                            <Route exact path={'/planned'} component={TodoListPage}/>
+                            <Route path={'/:listId/:todoId?'} component={TodoListPage}/>
+                        </Switch>
+                    </AppContent>
+                </div>
+            </DataContext.Provider>
+        );
+    }
 }
 
 export default App;

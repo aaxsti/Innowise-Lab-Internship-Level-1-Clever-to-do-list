@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, List, TextField} from "@material-ui/core";
+import {List, TextField} from "@material-ui/core";
 
 const TodoForm = ({onSubmit}) => {
     const [title, setTitle] = useState('');
@@ -12,7 +12,7 @@ const TodoForm = ({onSubmit}) => {
     }
 
     return (
-        <form style={{marginTop: 4}} onSubmit={handleSubmit}>
+        <form style={{ padding: '0 1rem 0'}} onSubmit={handleSubmit}>
             <List>
                 <TextField
                     placeholder='Новая задача...'

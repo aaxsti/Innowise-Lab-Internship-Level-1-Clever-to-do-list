@@ -1,4 +1,14 @@
 .todo-details {
-  flex-basis: 256px;
+  flex-basis: 300px;
   background-color: #ffffff;
+  border-left: 1px rgba(0, 0, 0, 0.12) solid;
+  border-top: 1px rgba(0, 0, 0, 0.12) solid;
+}
+
+.todo-title {
+  padding: 1rem;
+}
+
+.todo-form-elements {
+  padding: 1rem;
 }
