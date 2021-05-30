@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
 import {List, TextField} from "@material-ui/core";
+import styled from "styled-components";
+
+const TodoListForm = styled.form`
+  padding: 0 1rem 0;
+`
+
 
 const TodoForm = ({onSubmit}) => {
     const [title, setTitle] = useState('');
@@ -12,7 +18,7 @@ const TodoForm = ({onSubmit}) => {
     }
 
     return (
-        <form style={{ padding: '0 1rem 0'}} onSubmit={handleSubmit}>
+        <TodoListForm onSubmit={handleSubmit}>
             <List>
                 <TextField
                     placeholder='Новая задача...'
@@ -22,7 +28,7 @@ const TodoForm = ({onSubmit}) => {
                     fullWidth
                 />
             </List>
-        </form>
+        </TodoListForm>
     );
 }
 

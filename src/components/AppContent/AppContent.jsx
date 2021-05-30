@@ -1,9 +1,13 @@
 import React from 'react';
-import './../../App.scss';
+import styled from "styled-components";
+
+const AppContentWrapper = styled.main`
+  width: 100%;
+`
 
 const AppContent = ({...props}) => {
     return (
-        <main id="app-content" {...props}/>
+        <AppContentWrapper id="app-content" {...props}/>
     );
 }
 

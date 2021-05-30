@@ -1,5 +1,4 @@
-import React, {useContext} from 'react';
-import s from './AppDrawer.module.css';
+import React, {useEffect} from 'react';
 import {Icon, IconButton, List, ListItem, ListItemIcon, ListItemText, Typography} from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import StarIcon from '@material-ui/icons/Star';
@@ -7,25 +6,60 @@ import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import TodayRoundedIcon from '@material-ui/icons/TodayRounded';
 import HomeIcon from '@material-ui/icons/Home';
 import {NavLink} from "react-router-dom";
-import DataContext from '../../context/data'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {requestLists} from "../../redux/todo/todo.thunks";
+import {useDispatch, useSelector} from "react-redux";
+import {UserSelector} from "../../redux/auth/auth.selectors";
+import {ListSelector} from "../../redux/todo/todo.selectors";
+import {signOut} from "../../redux/auth/auth.thunks";
+import styled from "styled-components";
 
-const AppDrawer = ({lists}) => {
-    const {state} = useContext(DataContext);
-    console.log(state)
+const AppDrawerWrapper = styled.div`
+  width: 300px;
+  border-right: 1px rgba(0, 0, 0, 0.12) solid;
+`
+
+const SidebarInfo = styled.div`
+  background-color: #e4eaf1;
+  padding-left: 20px;
+`
+
+const SidebarInfoTitle = styled(Typography)`
+  padding-top: 15px;
+  padding-bottom: 5px;
+`
+
+const SidebarInfoUserEmail = styled(Typography)`
+  padding-bottom: 16px;
+`
+
+const AppDrawer = ({history}) => {
+    const lists = useSelector(ListSelector);
+    const user = useSelector(UserSelector);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(requestLists());
+    }, [dispatch]);
+
+    const handleSignOut = () => {
+        dispatch(signOut())
+    }
+
     return (
-        <div className={s.sidebar}>
-            <div className={s.sidebarInfo}>
-                <Typography variant="h6" className={s.sidebarHeader}>
+        <AppDrawerWrapper>
+            <SidebarInfo>
+                <SidebarInfoTitle variant="h5">
                     React Todo
-                </Typography>
-                <Typography variant="subtitle2" className={s.sidebarEmail}>
-                    <span>{state.user ? state.user.email : ''}</span>
-                    <IconButton onClick={() => {}}>
+                    <IconButton onClick={handleSignOut}>
                         <Icon><ExitToAppIcon/></Icon>
                     </IconButton>
-                </Typography>
-            </div>
+                </SidebarInfoTitle>
+                <SidebarInfoUserEmail variant="subtitle1">
+                    <span>{user ? user.email : ''}</span>
+                </SidebarInfoUserEmail>
+            </SidebarInfo>
 
             <Divider/>
 
@@ -54,7 +88,7 @@ const AppDrawer = ({lists}) => {
                     )
                 }
             </List>
-        </div>
+        </AppDrawerWrapper>
     );
 }
 

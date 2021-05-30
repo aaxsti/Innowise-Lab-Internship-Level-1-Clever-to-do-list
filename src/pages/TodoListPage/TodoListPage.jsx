@@ -1,59 +1,76 @@
-import React, {useContext, useEffect, useState} from 'react';
-import DataContext from '../../context/data'
-import {CircularProgress, Typography} from "@material-ui/core";
+import React, {useEffect, useState} from 'react';
+import {Typography} from "@material-ui/core";
 import TodoList from "../../components/TodoList/TodoList";
 import TodoForm from "../../components/TodoForm/TodoForm";
 import TodoDetails from "../../components/TodoDetails/TodoDetails";
-import './TodoListPage.scss';
-import {Layout} from 'mdc-react';
-import {actions} from '../../store';
+import {useDispatch, useSelector} from "react-redux";
+import {ListSelector, TodoSelector} from "../../redux/todo/todo.selectors";
+import {createTodo, deleteTodo, requestListTodos, requestTodos, updateTodo} from "../../redux/todo/todo.thunks";
+import styled from "styled-components";
+import Spinner from "../../components/common/Spinner";
 
+const TodoListWrapper = styled.div`
+  max-width: 100%;
+  display: flex;
+`
+
+const TodoListWrapperLayout = styled.div`
+  flex: 1;
+`
+
+const TodoTitleWrapper = styled(Typography)`
+  padding: 14px;
+  background-color: #afc0d4;
+`
 
 const TodoListPage = ({match}) => {
-    const {state, dispatch} = useContext(DataContext)
     const [selectedTodo, setSelectedTodo] = useState(null);
+    const dispatch = useDispatch()
 
-    useEffect(async () => {
+    const lists = useSelector(ListSelector)
+    const todos = useSelector(TodoSelector)
+
+    useEffect(() => {
+        setSelectedTodo(null);
+
         if (match.params.listId) {
-            await actions.getListTodos(match.params.listId, dispatch)
+            dispatch(requestListTodos(match.params.listId));
         } else {
-            await actions.getTodos(dispatch);
+            dispatch(requestTodos());
         }
+
     }, [dispatch, match.params.listId])
 
-    const handleSubmit = async (title) => {
-        await actions.createTodo({
+    const handleSubmit = (title) => {
+        dispatch(createTodo({
             title,
             listId: list.id
-        }, dispatch)
+        }))
     }
 
-    const handleDelete = async (todoId) => {
-        await actions.deleteTodo(todoId, dispatch);
+    const handleDelete = (todoId) => {
+        dispatch(deleteTodo(todoId));
     }
 
-    const handleUpdate = async (todoId, data) => {
-        await actions.updateTodo(todoId, data, dispatch);
+    const handleUpdate =(todoId, data) => {
+        dispatch(updateTodo(todoId, data));
     }
 
-    const handleSelect = async (todo) => {
+    const handleSelect = (todo) => {
         setSelectedTodo(todo);
     }
 
-    const list = state.lists.find(list => list.id === match.params.listId)
+    const list = lists.find(list => list.id === match.params.listId)
 
-    if (!list || !state.todos) return (
-        <div style={{padding: '50px 0 0 50px'}}>
-            <CircularProgress size={70} thickness={2.0}/>
-        </div>)
+    if (!list || !todos) return <Spinner/>
 
     return (
         <div>
-            <Typography variant="h5" id="todo-list-title">{list.title}</Typography>
-            <Layout id='todo-list-page' className="page" row>
-                <Layout>
+            <TodoTitleWrapper variant="h5">{list.title}</TodoTitleWrapper>
+            <TodoListWrapper>
+                <TodoListWrapperLayout>
                     <TodoList
-                        todos={state.todos}
+                        todos={todos}
                         list={list}
                         onSelect={handleSelect}
                         onDelete={handleDelete}
@@ -62,13 +79,14 @@ const TodoListPage = ({match}) => {
                     <TodoForm
                         className="todo-form"
                         onSubmit={handleSubmit}/>
-                </Layout>
+                </TodoListWrapperLayout>
+
                 {selectedTodo &&
                 <TodoDetails
                     todo={selectedTodo}
                     onClose={() => setSelectedTodo(null)}/>
                 }
-            </Layout>
+            </TodoListWrapper>
         </div>
     )
 }
